@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:extends="base">
+  <head th:replace="~{common :: meta_header('対局結果詳細',~{::link},~{::script})}">
+    <script src="/script/gameResultManageDetailScript.js"></script>
+  </head>
+  <body>
+	    <div th:replace="~{common :: header}"></div>
+	    <h2 class="center"><span class="error_text" th:text="${errorMessage}"></span></h2>
+	    <h2 class="center"><span th:text="${message}"></span></h2>
+	    <h2 class="center"><span class="warn_text" th:text="${warnMessage}"></span></h2>
+	
+		<div id="update_form" class="form">
+			<h2 class="keeper">対局結果の更新</h2>
+			<form id="update_form" method="post" th:action="@{/game-result/{id}(id=${gameResult.gameId})}">
+				<input type="hidden" name="gameId" th:value="${gameResult.gameId}" />
+				<input type="hidden" name="gameDate" th:value="${gameResult.gameDate}" />
+				<input type="hidden" name="floatingRate" th:value="${gameResult.floatingRate}" />
+				<input type="hidden" name="syncFlg" th:value="${gameResult.syncFlg}" />
+				<table>
+					<tr>
+						<th class="required"><label>勝者</label></th>
+						<td><div class="cp_iptxt"><select name="winner" th:value="${winner}" >
+							<option th:each="userData : ${userDataList}" th:value="${userData.userId}" th:text="${userData.userName}" 
+							th:selected="${userData.userName == gameResult.winner}" />
+						</select></div></td>
+					</tr>
+					<tr>
+						<th class="required"><label>敗者</label></th>
+						<td><div class="cp_iptxt"><select name="loser" th:value="${loser}" >
+							<option th:each="userData : ${userDataList}" th:value="${userData.userId}" th:text="${userData.userName}"
+							th:selected="${userData.userName == gameResult.loser}" />
+						</select></div></td>
+					</tr>
+				</table>
+				<div id="occur_restore_button"><button type="submit" class="form_button">更新</button></div>
+			</form>
+		</div>
+  </body>
+</html>

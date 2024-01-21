@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:extends="base">
+  <head th:replace="~{common :: meta_header('スキャン結果',~{::link},~{::script})}">
+    <script src="/script/gameResultScan.js"></script>
+  </head>
+  <body>
+	    <div th:replace="~{common :: header}"></div>
+	    <h2 class="center"><span id="errorMessage" class="error_text"></span></h2>
+	    <h2 class="center"><span id="message"></span></h2>
+	    <h2 class="center"><span id="warnMessage" class="warn_text"></span></h2>
+	    	    
+		<div id="scan_form" class="form">
+			<h2 class="keeper">対局結果読み取りフォーム</h2>
+			<p>本画面を開いた状態でQRコード読み取りすると、対局結果が登録されます。</p>
+			<form id="regist_form" method="post" th:action="@{/game-result/scan/}">
+				<table>
+					<tr>
+						<th class="required"><label>会員ID</label></th>
+						<td><div class="cp_iptxt"><input type="text" name="userId" id="userId"/></div></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div id="scan_result" class="center"/>
+	<div id="optionalMethodField" th:attr="optionalMethod=${optionalMethod}" />
+	<div id="optionalParamField" th:attr="optionalValue=${optionalValue}" />
+  </body>
+</html>

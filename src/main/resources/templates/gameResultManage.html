@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:extends="base">
+  <head th:replace="~{common :: meta_header('対局結果管理',~{::link},~{::script})}">
+  </head>
+  <body>
+	    <div th:replace="~{common :: header}"></div>
+	    <h2 class="center"><span class="error_text" th:text="${errorMessage}"></span></h2>
+	    <h2 class="center"><span id="dispMessage" th:text=${message}></span></h2>
+	    <h3 class="center"><span class="info_text" th:text="${infoMessage}"></span></h3>
+	    <div id="select_menu" class="center">
+		    <button onclick="dispForm('search')" class="form_button">検索フォーム表示</button>
+			<button onclick="dispForm('regist')" class="form_button">登録フォーム表示</button>
+			<button onclick="dispForm('upload')" class="form_button">CSV読込フォーム表示</button>
+		</div>
+		<div id="regist_form" class="form">
+			<h2 class="keeper">対局結果の登録</h2>
+			<form id="regist_form" method="post" th:action="@{/game-result}">
+				<table>
+					<tr>
+						<th class="required"><label>勝者</label></th>
+						<td><div class="cp_iptxt"><select name="winner" th:value="${winner}" >
+							<option value="" disabled selected style="display:none;"></option>
+							<option th:each="userData : ${userDataList}" th:value="${userData.userId}" th:text="${userData.userName}"></option>
+						</select></div></td>
+					</tr>
+					<tr>
+						<th class="required"><label>敗者</label></th>
+						<td><div class="cp_iptxt"><select name="loser" th:value="${loser}" >
+							<option value="" disabled selected style="display:none;"></option>
+							<option th:each="userData : ${userDataList}" th:value="${userData.userId}" th:text="${userData.userName}"></option>
+						</select></div></td>
+					</tr>
+					<tr>
+						<th class="required"><label>対局日時</label></th>
+						<td><div class="cp_iptxt"><input type="text" name="gameDate" th:value="${date}"
+							onfocus="this.type='datetime-local' " onfocusout="this.type='text'" /></div></td>
+					</tr>
+				</table>
+				<button type="submit" class="form_button">登録</button>
+			</form>
+		</div>
+		<div id="regist_info_form" class="form">
+			<h2 class="keeper">対局結果登録情報</h2>
+			<p>対局ID：<span th:if="${registGameData}" th:text="${registGameData.gameId}"></span></p>
+			<p>勝者：<span th:if="${registGameData}" th:text="${registGameData.winner}"></span></p>
+			<p>敗者：<span th:if="${registGameData}" th:text="${registGameData.loser}"></span></p>
+			<p>対局日時：<span th:if="${registGameData}" th:text="${registGameData.gameDate}"></span></p>
+		</div>
+		<div id="search_form" class="form">
+			<h2 class="keeper">対局結果の検索</h2>
+			<form method="get" th:action="@{/game-result}">
+				<table>
+					<tr>
+						<th class="optional"><label>勝者</label></th>
+						<td><div class="cp_iptxt"><select name="winnerId" th:value="${winnerId}" >
+							<option value="" disabled selected style="display:none;"></option>
+							<option th:each="userData : ${userDataList}" th:value="${userData.userId}" th:text="${userData.userName}"></option>
+						</select></div></td>
+					</tr>
+					<tr>
+						<th class="optional"><label>敗者</label></th>
+						<td><div class="cp_iptxt"><select name="loserId" th:value="${loserId}" >
+							<option value="" disabled selected style="display:none;"></option>
+							<option th:each="userData : ${userDataList}" th:value="${userData.userId}" th:text="${userData.userName}"></option>
+						</select></div></td>
+					</tr>				
+					<tr>
+						<th class="optional"><label>対局日時（開始）</label></th>
+						<td><div class="cp_iptxt"><input type="text" name="startDate" th:value="${startDate}"
+							onfocus="this.type='datetime-local' " onfocusout="this.type='text'" /></div></td>
+					</tr>
+					<tr>
+						<th class="optional"><label>対局日時（終了）</label></th>
+						<td><div class="cp_iptxt"><input type="text" name="endDate" th:value="${endDate}"
+							onfocus="this.type='datetime-local' " onfocusout="this.type='text'" /></div></td>
+					</tr>
+	        	</table>							
+				<button type="submit" class="form_button">検索</button>
+			</form>
+		</div>
+		<div id="upload_form" class="form">
+			<h2 class="keeper">CSVファイルの対局結果を一括登録</h2>
+			<form method="post" th:action="@{/game-result-upload}" enctype="multipart/form-data">
+				<input type="file" name="file" />
+				<button type="submit" class="form_button">CSV読み込み</button>
+			</form>
+		</div>
+		<br>
+		<table class="base_table">
+			<caption>【対局結果一覧】</caption>
+			<thead>
+				<th>対局ID</th>
+				<th>勝者</th>
+				<th>敗者</th>
+				<th>対局日時</th>
+			</thead>
+			<tr th:each="gameResult : ${gameResultList}" th:object="${gameResult}">
+				<td><a th:href="@{/game-result/{id}(id=${gameResult.gameId})}" th:text="*{gameId}"></td>
+				<td th:text="*{winner}"></td>
+				<td th:text="*{loser}"></td>
+				<td th:text="*{gameDate}"></td>
+			</tr>
+		</table>
+  	<div id="selectedFormField" th:attr="selectedFormName=${selectedFormName}" />
+  	<div id="dispInfoFormField" th:attr="dispInfoFormFlg=${dispInfoFormFlg}" />
+  </body>
+</html>

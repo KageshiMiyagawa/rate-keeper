@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:extends="base">
+<head th:replace="~{common :: meta_header('トップ',~{::link},~{::script})}">
+</head>
+  <body>
+	<div th:replace="~{common :: header}"></div>
+    <h2 class="center"><span class="error_text" th:text="${errorMessage}"></span></h2>
+    <h2 class="center"><span th:text="${message}"></span></h2>
+	<div class="form">
+		<h2 class="keeper">管理メニュー</h2>
+		<form method="get" th:action="@{/game-result-manage}">
+			<button type="submit" class="menu_button">対局結果管理</button>
+		</form>
+		<form method="get" th:action="@{/user-manage}">
+			<button type="submit" class="menu_button">会員情報管理</button>
+		</form>
+	</div>
+	<div id="register_form" class="form">
+		<h2 class="keeper2">操作メニュー</h2>
+		<form method="get" th:action="@{/qrCode}">
+			<button type="submit" class="menu_button">QRコード生成</button>
+		</form>		
+		<form method="get" th:action="@{/scan/game-result}">
+			<button type="submit" class="menu_button">対局結果読取</button>
+		</form>
+		<form method="get" th:action="@{/calc-rate}">
+			<button type="submit" class="menu_button">レーティング計算</button>
+		</form>
+	</div>
+  </body>
+</html>

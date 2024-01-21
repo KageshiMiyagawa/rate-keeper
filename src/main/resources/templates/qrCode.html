@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:extends="base">
+  <head th:replace="~{common :: meta_header('QRコード生成',~{::link},~{::script})}">
+    <script src="/script/qrCodeScript.js"></script>
+  </head>
+  <body>
+    <div th:replace="~{common :: header}"></div>
+    <h2 class="center"><span class="error_text" th:text="${errorMessage}"></span></h2>
+    <h2 class="center"><span th:text="${message}"></span></h2>
+	<div id="regist_form" class="form">
+		<h2 class="keeper">QRコード生成</h3>
+		<form id="regist_form" method="get" th:action="@{/qrCode-generate}">
+			<table>
+				<tr>
+					<th class="required"><label>会員名</label></th>
+					<td><div class="cp_iptxt"><select name="userId" th:value="${userId}" >
+						<option value="" disabled selected style="display:none;"></option>
+						<option th:each="userData : ${userDataList}" th:value="${userData.userId}" th:text="${userData.userName}"></option>
+					</select></div></td>
+				</tr>
+			</table>
+			<button type="submit" class="form_button">QRコードを生成する</button>
+		</form>
+	</div>
+	<div id="qrCodeField" class="center">
+		<img th:src="@{|/imageBytes/${userId}|}"/>
+	</div>
+	<div id="hiddenField" th:attr="selectedUserValue=${userId}" />
+  </body>
+</html>

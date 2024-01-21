@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:extends="base">
+  <head th:replace="~{common :: meta_header('レーティング計算',~{::link},~{::script})}">
+    <script src="/script/calcRateScript.js"></script>
+  </head>
+  <body>
+	<div th:replace="~{common :: header}"></div>
+	    <h2 class="center"><span th:text="${errorMessage}"></span></h2>
+	    <h2 class="center"><span th:text="${message}"></span></h2>
+		<div id="regist_form" class="form">
+			<h2 class="keeper">レーティング計算</h2>
+			<form id="regist_form" method="post" th:action="@{/calc-rate}">
+				<button type="submit" class="form_button">レーティング計算</button>
+			</form>
+		</div>
+	<br/>
+	<table class="base_table">
+		<caption>【レーティング計算結果一覧（会員別）】</caption>
+		<thead>
+			<th>会員ID</th>
+			<th>会員名</th>
+			<th>計算前レート</th>
+			<th>計算後レート</th>
+			<th>レート増減</th>
+		</thead>
+		<tr th:each="calcResultUserData : ${calcResultUserDataList}" th:object="${calcResultUserData}">
+			<td th:text="*{userId}"></td>
+			<td th:text="*{userName}"></td>
+			<td th:text="*{beforeRate}"></td>
+			<td th:text="*{afterRate}"></td>
+			<td th:text="*{riseAndFall}"></td>
+		</tr>
+	</table>
+	<br/>
+	<table class="base_table">
+		<caption>【レーティング計算結果一覧（対局別）】</caption>
+		<thead>
+			<th>対局ID</th>
+			<th>対局日時</th>
+			<th>勝者</th>
+			<th>勝者対局前レート</th>
+			<th>勝者対局後レート</th>
+			<th>敗者</th>
+			<th>敗者対局前レート</th>
+			<th>敗者対局後レート</th>
+		</thead>
+		<tr th:each="calcResultGameData : ${calcResultGameDataList}" th:object="${calcResultGameData}">
+			<td th:text="*{gameId}"></td>
+			<td th:text="*{gameDate}"></td>
+			<td th:text="*{winner}"></td>
+			<td th:text="*{winnerRateBefore}"></td>
+			<td th:text="*{winnerRateAfter}"></td>
+			<td th:text="*{loser}"></td>
+			<td th:text="*{loserRateBefore}"></td>
+			<td th:text="*{loserRateAfter}"></td>
+		</tr>
+	</table>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:extends="base">
+  <head th:replace="~{common :: meta_header('会員管理詳細',~{::link},~{::script})}">
+  </head>
+  <body>
+	<div th:fragment="content">
+	    <div th:replace="~{common :: header}"></div>
+	    <h2 class="center"><span class="error_text" th:text="${errorMessage}"></span></h2>
+	    <h2 class="center"><span th:text="${message}"></span></h2>
+	
+		<div id="regist_form" class="form">
+			<h2 class="keeper">会員情報の更新</h2>
+			<form id="regist_form" method="post" th:action="@{/user/{id}(id=${userData.userId})}">
+				<input type="hidden" name="userId" th:value="${userData.userId}" />
+				<table>
+					<tr>
+						<th class="required"><label>会員名</label></th>
+						<td><div class="cp_iptxt"><input type="text" name="userName" th:value="${userData.userName}"/></div></td>
+					</tr>
+					<tr>
+						<th class="required"><label>会員種別</label></th>
+						<td><div class="cp_iptxt"><select name="userType" th:value="${userType}" >
+							<option th:each="userType : ${T(jp.co.ratekeeper.code.UserType).values()}" th:value="${userType.code}"
+							th:text="${userType.name}" th:selected="${userData.userType == userType.name}"/>
+						</select></div></td>
+					</tr>
+					<tr>
+						<th class="required"><label>段位</label></th>
+						<td><div class="cp_iptxt"><select name="grade" th:value="${grade}" >
+							<option th:each="grade : ${T(jp.co.ratekeeper.code.Grade).values()}" th:value="${grade.code}" th:text="${grade.name}" 
+							th:selected="${userData.grade == grade.name}"/>
+						</select></div></td>
+					</tr>
+					<tr>
+						<th class="required"><label>入会日</label></th>
+						<td><div class="cp_iptxt"><input type="text" name="joinDate" th:value="${userData.joinDate}" 
+						onfocus="this.type='date' " onfocusout="this.type='text'" /></div></td>
+					</tr>
+					<tr>
+						<th class="optional"><label>レーティング</label></th>
+						<td><div class="cp_iptxt"><input type="number" name="rate" th:value="${userData.rate}" /></div></td>
+					</tr>
+				</table>
+				<button type="submit" class="form_button">更新</button>
+			</form>
+		</div>
+	</div>
+  </body>
+</html>
