@@ -65,6 +65,8 @@ public class UserManageService {
 		try (CSVReader csvReader = new CSVReader(new BufferedReader(new InputStreamReader(file.getInputStream())))) {
 			List<String[]> lines = csvReader.readAll();
 			
+			// Header行は読込対象外
+			lines.remove(0);
 			for (String[] line : lines) {
 				TtUser ttUser = new TtUser();
 				ttUser.setUserType(line[0]);
@@ -76,7 +78,7 @@ public class UserManageService {
 				userList.add(ttUser);
 			}
 			// Header行は読込対象外
-			userList.remove(0);
+			//	userList.remove(0);
 		}
 		return userManageRepository.saveAll(userList);
 	}
